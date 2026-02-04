@@ -2,7 +2,7 @@
 # 🔐 Security & Code Quality Pipeline
 # ===========================================
 # Bu workflow her push ve PR'da çalışır
-# Araçlar: GitLeaks, CodeQL, PHPStan
+# Araçlar: TruffleHog, CodeQL, PHPStan
 
 name: 🔐 Security Scan
 
@@ -17,24 +17,24 @@ on:
 
 jobs:
   # =========================================
-  # 1️⃣ GitLeaks - Secret Detection
+  # 1️⃣ TruffleHog - Secret Detection
   # =========================================
-  gitleaks:
-    name: 🔑 GitLeaks - Secret Scan
+  trufflehog:
+    name: 🔑 TruffleHog - Secret Scan
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: read
+      actions: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Tüm git geçmişini al
 
-      - name: Run GitLeaks
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run TruffleHog
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --only-verified
 
   # =========================================
   # 2️⃣ PHPStan - PHP Static Analysis
