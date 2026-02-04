@@ -1,0 +1,45 @@
+# ===========================================
+# 🤖 Dependabot Configuration
+# ===========================================
+# Bağımlılıkları otomatik günceller ve güvenlik açıklarını bildirir
+
+version: 2
+
+updates:
+  # GitHub Actions bağımlılıkları
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Istanbul"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    open-pull-requests-limit: 5
+
+  # Composer bağımlılıkları (ileride composer.json eklenirse)
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Istanbul"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "php"
+    open-pull-requests-limit: 10
+    # Güvenlik güncellemelerini grupla
+    groups:
+      security-updates:
+        applies-to: security-updates
+        patterns:
+          - "*"
